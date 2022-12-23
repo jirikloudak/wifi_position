@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": "p1",
+      "name": "Kitchen",
+      "description": "Description 1",
+      "SSID": "Test SSID"
+    },
+    {
+      "id": "p2",
+      "name": "Garage",
+      "description": "Description 2",
+      "SSID": "Test SSID 2"
+    },
+    {
+      "id": "p3",
+      "name": "Bedroom",
+      "description": "Description 3",
+      "SSID": "Test SSID 2"
+    }
+  ]
+}

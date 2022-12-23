@@ -1,12 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
 import 'package:wifi_hunter/wifi_hunter.dart';
 import 'package:wifi_hunter/wifi_hunter_result.dart';
+import 'package:wifi_position/pages/LocationsPage.dart';
+
+import 'model/locations.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -35,6 +41,35 @@ class _MyAppState extends State<MyApp> {
     setState(() => buttonColorPressed = Colors.lightBlue);
   }
 
+  Future openDialog() => showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Name"),
+      content: const TextField(
+        decoration: InputDecoration(hintText: "Enter name of position"),
+      ),
+      actions: [
+        TextButton(
+          child: Text("Save"),
+          onPressed: () {},
+        )
+      ],
+    )
+  );
+
+
+  Future<File> get _jsonFile async {
+    return File('assets/sample.json');
+  }
+
+
+  Future<locations> writejsonFile() async {
+    final locations location = locations("15", "Write test", "Write test", "ssid test");
+    File file = await _jsonFile;
+    await file.writeAsString(json.encode(location));
+    return location;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,19 +86,32 @@ class _MyAppState extends State<MyApp> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 20.0),
+                margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonCollor)),
                     onPressed: () => huntWiFis(),
-                    child: const Text('Hunt Networks')
+                    child: const Text('Show wifis')
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 20.0),
+                margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonCollor)),
-                    onPressed: () => null,
-                    child: const Text('Hunt Networks')
+                    onPressed: () {
+                      //openDialog();
+                      writejsonFile();
+                      },
+                    child: const Text('Save position')
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonCollor)),
+                    onPressed: () {
+                      locationsPage(context);
+                    },
+                    child: const Text('Show positions')
                 ),
               ),
               wiFiHunterResult.results.isNotEmpty ? Container(
@@ -100,5 +148,9 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  void locationsPage (BuildContext context){
+    Navigator.push(context, MaterialPageRoute(builder: (context){return LocationsPage();}));
   }
 }
