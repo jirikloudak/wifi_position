@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -9,10 +6,8 @@ import 'package:wifi_hunter/wifi_hunter.dart';
 import 'package:wifi_hunter/wifi_hunter_result.dart';
 import 'package:wifi_position/pages/LocationsPage.dart';
 
-import 'model/locations.dart';
-
 void main() {
-  runApp(MaterialApp(home: MyApp()));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -24,11 +19,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   WiFiHunterResult wiFiHunterResult = WiFiHunterResult();
-  Color buttonCollor = Colors.lightBlue;
+  Color buttonColor = Colors.lightBlue;
   Color buttonColorPressed = Colors.red;
+  final _formKey = GlobalKey<FormState>();
 
   Future<void> huntWiFis() async {
-    setState(() => buttonCollor = buttonColorPressed);
+    setState(() => buttonColor = buttonColorPressed);
 
     try {
       wiFiHunterResult = (await WiFiHunter.huntWiFiNetworks)!;
@@ -44,31 +40,52 @@ class _MyAppState extends State<MyApp> {
   Future openDialog() => showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text("Name"),
-      content: const TextField(
-        decoration: InputDecoration(hintText: "Enter name of position"),
+      title: const Text("New position"),
+      content: Stack(
+        clipBehavior: Clip.none, children: <Widget>[
+          Positioned(
+            right: -40.0,
+            top: -40.0,
+            left: 40.0,
+            bottom: 40.0,
+            child: InkResponse(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(hintText: "Enter name of position"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(hintText: "Enter description"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    child: const Text("Submit"),
+                    onPressed: () {
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          child: Text("Save"),
-          onPressed: () {},
-        )
-      ],
     )
   );
-
-
-  Future<File> get _jsonFile async {
-    return File('assets/sample.json');
-  }
-
-
-  Future<locations> writejsonFile() async {
-    final locations location = locations("15", "Write test", "Write test", "ssid test");
-    File file = await _jsonFile;
-    await file.writeAsString(json.encode(location));
-    return location;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +105,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonCollor)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
                     onPressed: () => huntWiFis(),
                     child: const Text('Show wifis')
                 ),
@@ -96,10 +113,9 @@ class _MyAppState extends State<MyApp> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonCollor)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
                     onPressed: () {
-                      //openDialog();
-                      writejsonFile();
+                      openDialog();
                       },
                     child: const Text('Save position')
                 ),
@@ -107,7 +123,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonCollor)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
                     onPressed: () {
                       locationsPage(context);
                     },
@@ -151,6 +167,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void locationsPage (BuildContext context){
-    Navigator.push(context, MaterialPageRoute(builder: (context){return LocationsPage();}));
+    Navigator.push(context, MaterialPageRoute(builder: (context){return const LocationsPage();}));
   }
 }

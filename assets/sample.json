@@ -1,10 +1,9 @@
-{
-  "items": [
+[
     {
       "id": "p1",
       "name": "Kitchen",
       "description": "Description 1",
-      "SSID": "Test SSID"
+      "signals": [-68, -71, -88]
     },
     {
       "id": "p2",
@@ -16,7 +15,12 @@
       "id": "p3",
       "name": "Bedroom",
       "description": "Description 3",
-      "SSID": "Test SSID 2"
+      "signals": [-68, -71, -88]
+    },
+    {
+      "id": "p4",
+      "name": "Garden",
+      "description": "Description 4",
+      "signals": [-68, -71, -88]
     }
-  ]
-}
+]
