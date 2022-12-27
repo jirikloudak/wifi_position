@@ -3,24 +3,52 @@
       "id": "p1",
       "name": "Kitchen",
       "description": "Description 1",
-      "signals": [-68, -71, -88]
+      "signal": {
+        "ssid1": "ssid1",
+        "strength1": -83,
+        "ssid2": "ssid1",
+        "strength2": -75,
+        "ssid3": "ssid1",
+        "strength3": -69
+      }
     },
     {
       "id": "p2",
       "name": "Garage",
       "description": "Description 2",
-      "SSID": "Test SSID 2"
+      "signal": {
+        "ssid1": "ssid1",
+        "strength1": -83,
+        "ssid2": "ssid1",
+        "strength2": -75,
+        "ssid3": "ssid1",
+        "strength3": -69
+      }
     },
     {
       "id": "p3",
       "name": "Bedroom",
       "description": "Description 3",
-      "signals": [-68, -71, -88]
+      "signal": {
+        "ssid1": "ssid1",
+        "strength1": -79,
+        "ssid2": "ssid1",
+        "strength2": -74,
+        "ssid3": "ssid1",
+        "strength3": -71
+      }
     },
     {
       "id": "p4",
       "name": "Garden",
       "description": "Description 4",
-      "signals": [-68, -71, -88]
+      "signal": {
+        "ssid1": "ssid1",
+        "strength1": -84,
+        "ssid2": "ssid1",
+        "strength2": -85,
+        "ssid3": "ssid1",
+        "strength3": -68
+      }
     }
 ]

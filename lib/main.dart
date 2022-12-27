@@ -19,24 +19,41 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   WiFiHunterResult wiFiHunterResult = WiFiHunterResult();
-  Color buttonColor = Colors.lightBlue;
-  Color buttonColorPressed = Colors.red;
+
+  ///GlobalKey to identify input form
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> huntWiFis() async {
-    setState(() => buttonColor = buttonColorPressed);
+  ///Variables to store text from text fields
+  String positionNameText = "";
+  String descriptionText = "";
 
+  ///Controlers for text fields
+  final positionNameTextFieldController = TextEditingController();
+  final positionDescriptionTextFieldController = TextEditingController();
+
+  ///method to clear text fields
+  void clearTextFields(){
+    positionDescriptionTextFieldController.text = "";
+    positionNameTextFieldController.text = "";
+  }
+
+  ///Method to save data from text fields into variables
+  void getFormResult(){
+    positionNameText = positionNameTextFieldController.text;
+    descriptionText = positionDescriptionTextFieldController.text;
+  }
+
+  ///Scan wifi networks
+  Future<void> huntWiFis() async {
     try {
       wiFiHunterResult = (await WiFiHunter.huntWiFiNetworks)!;
     } on PlatformException catch (exception) {
       print(exception.toString());
     }
-
     if (!mounted) return;
-
-    setState(() => buttonColorPressed = Colors.lightBlue);
   }
 
+  ///Dialog for adding new location
   Future openDialog() => showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -63,12 +80,14 @@ class _MyAppState extends State<MyApp> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     decoration: const InputDecoration(hintText: "Enter name of position"),
+                    controller: positionNameTextFieldController,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     decoration: const InputDecoration(hintText: "Enter description"),
+                    controller: positionDescriptionTextFieldController,
                   ),
                 ),
                 Padding(
@@ -76,6 +95,9 @@ class _MyAppState extends State<MyApp> {
                   child: TextButton(
                     child: const Text("Submit"),
                     onPressed: () {
+                      getFormResult();
+                      Navigator.pop(context);
+                      clearTextFields();
                     },
                   ),
                 )
@@ -105,7 +127,6 @@ class _MyAppState extends State<MyApp> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
                     onPressed: () => huntWiFis(),
                     child: const Text('Show wifis')
                 ),
@@ -113,7 +134,6 @@ class _MyAppState extends State<MyApp> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
                     onPressed: () {
                       openDialog();
                       },
@@ -123,7 +143,6 @@ class _MyAppState extends State<MyApp> {
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(buttonColor)),
                     onPressed: () {
                       locationsPage(context);
                     },

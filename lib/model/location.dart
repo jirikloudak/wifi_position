@@ -1,18 +1,17 @@
+import 'package:wifi_position/model/signal.dart';
+
 class Location {
   String id, name, description;
-  late List<int> signals;
+  Signal signal;
 
-  Location(this.id, this.name, this.description, List<dynamic> signals){
-
-    this.signals = signals.cast<int>();
-  }
+  Location(this.id, this.name, this.description, this.signal);
 
   factory Location.fromJson(Map<String, dynamic> json){
     return Location(
         json['id'] as String,
         json['name'] as String,
         json['description'] as String,
-        json['signals'] as List<dynamic>
+        Signal.fromJson(json["signal"])
     );
   }
 
@@ -20,6 +19,6 @@ class Location {
     'id': id,
     'name': name,
     'description': description,
-    'signals': signals.cast<dynamic>()
+    'signal': signal
   };
 }

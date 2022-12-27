@@ -25,7 +25,9 @@ void exportLocations(List<Location> data) {
   try{
     data.sort((a,b) => a.id.compareTo(b.id));
     List jsonList = [];
-    data.forEach((item) => jsonList.add(json.encode(item.toJson())));
+    for (var item in data) {
+      jsonList.add(json.encode(item.toJson()));
+    }
     File(locationsExportFile).writeAsStringSync(jsonList.toString());
     print('Saved data successfully!');
   } catch (e) {
