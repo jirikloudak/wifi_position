@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:wifi_position/model/location.dart';
 
-import '../model/location.dart';
 
 class LocationsPage extends StatefulWidget {
   const LocationsPage({Key? key}) : super(key: key);
@@ -15,19 +13,18 @@ class LocationsPage extends StatefulWidget {
 
 class _LocationsPageState extends State<LocationsPage> {
   List _items = [];
+  String jsonLocation = 'assets/sample.json';
 
-// Fetch content from the json file
+/// generate data for cards from information in JSON
   Future<void> generateCards() async {
-    final String response = await rootBundle.loadString('assets/sample.json');
+    final String response = await rootBundle.loadString(jsonLocation);
     final data = await json.decode(response);
     setState(() {
       _items = data;
     });
-    _items.isNotEmpty; {
-      print (_items.toString());
-    }
   }
 
+  /// Cards
   @override
   Widget build(BuildContext context) {
     return Scaffold(
